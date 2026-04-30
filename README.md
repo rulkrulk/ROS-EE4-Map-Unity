@@ -9,7 +9,9 @@ This project is designed for **Team Project EE4** and provides a real-time visua
 
 ## Demo
 
-Watch the visualization in action: [ROS_Mapping.gif](example_images/ROS_MAPPING.gif)
+Watch the visualization in action:
+
+![ROS Mapping demo](example_images/ROS_Mapping.gif)
 
 ## Features
 
