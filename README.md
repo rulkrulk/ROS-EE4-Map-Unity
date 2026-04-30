@@ -13,9 +13,20 @@ Watch the visualization in action:
 
 ![ROS Mapping demo](example_images/ROS_Mapping.gif)
 
-![Final Unity Map](example_images/FINAL_UNITY.png)
+### Final Results
 
-![Final ROS Map](example_images/FINAL_ROS.png)
+<table>
+   <tr>
+      <td align="center">
+         <strong>Final ROS</strong><br>
+         <img src="example_images/FINAL_ROS.png" alt="Final ROS" width="100%">
+      </td>
+      <td align="center">
+         <strong>Final Unity</strong><br>
+         <img src="example_images/FINAL_UNITY.png" alt="Final Unity" width="100%">
+      </td>
+   </tr>
+</table>
 
 
 ## Features
