@@ -1,0 +1,15 @@
+{
+  "m_SGVersion": 1,
+  "m_Type": "UnityEditor.ShaderGraph.GraphData",
+  "m_ObjectId": "sobel-depth-graph",
+  "m_Properties": [],
+  "m_Nodes": [
+    {
+      "type": "CustomFunctionNode",
+      "name": "SobelDepth",
+      "functionName": "SobelDepth",
+      "source": "string",
+      "functionBody": "\nvoid SobelDepth(float2 uv, float2 texelSize, out float edge)\n{\n    float dTL = Linear01Depth(SHADERGRAPH_SAMPLE_SCENE_DEPTH(uv + texelSize * float2(-1,  1)), _ZBufferParams);\n    float dTC = Linear01Depth(SHADERGRAPH_SAMPLE_SCENE_DEPTH(uv + texelSize * float2( 0,  1)), _ZBufferParams);\n    float dTR = Linear01Depth(SHADERGRAPH_SAMPLE_SCENE_DEPTH(uv + texelSize * float2( 1,  1)), _ZBufferParams);\n\n    float dML = Linear01Depth(SHADERGRAPH_SAMPLE_SCENE_DEPTH(uv + texelSize * float2(-1,  0)), _ZBufferParams);\n    float dMR = Linear01Depth(SHADERGRAPH_SAMPLE_SCENE_DEPTH(uv + texelSize * float2( 1,  0)), _ZBufferParams);\n\n    float dBL = Linear01Depth(SHADERGRAPH_SAMPLE_SCENE_DEPTH(uv + texelSize * float2(-1, -1)), _ZBufferParams);\n    float dBC = Linear01Depth(SHADERGRAPH_SAMPLE_SCENE_DEPTH(uv + texelSize * float2( 0, -1)), _ZBufferParams);\n    float dBR = Linear01Depth(SHADERGRAPH_SAMPLE_SCENE_DEPTH(uv + texelSize * float2( 1, -1)), _ZBufferParams);\n\n    float gx =\n        -dTL + dTR +\n        -2*dML + 2*dMR +\n        -dBL + dBR;\n\n    float gy =\n        -dTL -2*dTC -dTR +\n         dBL +2*dBC +dBR;\n\n    edge = abs(gx) + abs(gy);\n}\n"
+    }
+  ]
+}
