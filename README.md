@@ -5,13 +5,18 @@ A Unity-based visualization tool for ROS 2 3D point cloud and sensor data mappin
 
 ## About
 
-This project is designed for **Team Project EE4** and provides a real-time visualization interface for ROS 2-based robotic mapping systems. It enables seamless integration between a ROS compute board (running sensor drivers and mapping algorithms) and a display board (running the Unity visualization client) through ROS TCP Bridge communication.
+This project is designed for **Team Project EE4** and provides a real-time visualization interface for ROS 2-based robotic mapping systems (This effectively is just RViz but running in unity instead to allow us extra flexibility). It enables seamless integration between a ROS compute board (running sensor drivers and mapping algorithms) and a display board (running the Unity visualization client) through ROS TCP Bridge communication.
 
 ## Demo
 
 Watch the visualization in action:
 
 ![ROS Mapping demo](example_images/ROS_Mapping.gif)
+
+![Final Unity Map](example_images/FINAL_UNITY.png)
+
+![Final ROS Map](example_images/FINAL_ROS.png)
+
 
 ## Features
 
@@ -121,9 +126,16 @@ Key settings can be modified in `Assets/PointCloud2VisualizerSettings.asset`:
 ## Troubleshooting
 
 ### Connection Issues
-- Ensure ROS TCP Bridge is running on the compute machine
-- Check firewall settings and port 10000 accessibility
-- Verify network connectivity between machines
+- Make sure `ros2 run ros_tcp_endpoint default_server_endpoint` is running on the ROS/compute machine before pressing Play in Unity.
+- Confirm the Unity endpoint in `Assets/PointCloud2VisualizerSettings.asset` matches the machine you are connecting to. The default is `localhost:10000` for local setups.
+- If Unity is on Windows and ROS is running in WSL2, forward port `10000` to the WSL IP, for example:
+
+   ```powershell
+   netsh interface portproxy add v4tov4 listenaddress=127.0.0.1 listenport=10000 connectaddress=<YOUR WSL IP ADDRESS> connectport=10000
+   ```
+
+- Allow port `10000` through the firewall on both sides.
+- Verify the ROS and Unity machines can reach each other on the network, or use `localhost` only when both are on the same machine.
 
 ### No Point Cloud Appearing
 - Verify sensor is publishing to the correct topics
