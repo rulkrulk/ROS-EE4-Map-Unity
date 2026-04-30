@@ -2,9 +2,14 @@
 
 A Unity-based visualization tool for ROS 2 3D point cloud and sensor data mapping, bridging compute boards and display boards via ROS Bridge.
 
+
 ## About
 
 This project is designed for **Team Project EE4** and provides a real-time visualization interface for ROS 2-based robotic mapping systems. It enables seamless integration between a ROS compute board (running sensor drivers and mapping algorithms) and a display board (running the Unity visualization client) through ROS TCP Bridge communication.
+
+## Demo
+
+Watch the visualization in action: [ROS_MAPPING.mp4](example_images/ROS_MAPPING.mp4)
 
 ## Features
 
