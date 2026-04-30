@@ -5,7 +5,7 @@ A Unity-based visualization tool for ROS 2 3D point cloud and sensor data mappin
 
 ## About
 
-This project is designed for **Team Project EE4** and provides a real-time visualization interface for ROS 2-based robotic mapping systems (This effectively is just RViz but running in unity instead to allow us extra flexibility). It enables seamless integration between a ROS compute board (running sensor drivers and mapping algorithms) and a display board (running the Unity visualization client) through ROS TCP Bridge communication.
+This project is designed for **[Team Project EE4](https://github.com/McCwik/EE4---Mapping)** and provides a real-time visualization interface for ROS 2-based robotic mapping systems (This effectively is just RViz but running in unity instead to allow us extra flexibility). It enables seamless integration between a ROS compute board (running sensor drivers and mapping algorithms) and a display board (running the Unity visualization client) through ROS TCP Bridge communication.
 
 ## Demo
 
