@@ -19,23 +19,20 @@ public class FirstPersonCamera : MonoBehaviour
     public float idleSwaySpeed = 1f;
     public float idleSwayAmount = 0.5f;
 
-    // Private variables
     private float cameraVerticalRotation = 0f;
     private float cameraHorizontalRotation = 0f;
+
     private Vector2 lookInput;
     private Camera cam;
 
-    // Sway
     private Vector2 currentSway;
     private float idleSwayTimer = 0f;
 
-    // NEW: cursor state
     private bool cursorLocked = true;
 
     void Awake()
     {
         cam = GetComponent<Camera>();
-
         if (cam == null)
         {
             cam = gameObject.AddComponent<Camera>();
@@ -44,33 +41,53 @@ public class FirstPersonCamera : MonoBehaviour
 
     void Start()
     {
+#if UNITY_STANDALONE || UNITY_EDITOR
         LockCursor(true);
+#else
+        LockCursor(false);
+#endif
     }
 
     void Update()
     {
         HandleCursorToggle();
+        ReadLookInput();
 
+        HandleMouseLook();
+        HandleCameraSway();
+    }
+
+    void ReadLookInput()
+    {
+        lookInput = Vector2.zero;
+
+        // Desktop mouse input
         if (Mouse.current != null)
         {
-            lookInput = Mouse.current.delta.ReadValue();
+            lookInput = Mouse.current.delta.ReadValue() * mouseSensitivity;
         }
 
-        // Only rotate camera if cursor is locked
-        if (cursorLocked)
+        // Mobile touch input (drag to look)
+        if (Touchscreen.current != null)
         {
-            HandleMouseLook();
-            HandleCameraSway();
+            var touch = Touchscreen.current.primaryTouch;
+
+            if (touch.press.isPressed)
+            {
+                lookInput = touch.delta.ReadValue() * mouseSensitivity;
+            }
         }
     }
 
     void HandleCursorToggle()
     {
+#if UNITY_STANDALONE || UNITY_EDITOR
         if (Keyboard.current != null && Keyboard.current.vKey.wasPressedThisFrame)
         {
             cursorLocked = !cursorLocked;
             LockCursor(cursorLocked);
         }
+#endif
     }
 
     void LockCursor(bool locked)
@@ -81,23 +98,24 @@ public class FirstPersonCamera : MonoBehaviour
 
     void HandleMouseLook()
     {
-        float mouseX = lookInput.x * mouseSensitivity;
-        float mouseY = lookInput.y * mouseSensitivity;
+        float mouseX = lookInput.x;
+        float mouseY = lookInput.y;
 
-        // Vertical rotation
         cameraVerticalRotation -= mouseY;
         cameraVerticalRotation = Mathf.Clamp(cameraVerticalRotation, -90f, 90f);
 
-        // Horizontal rotation
         cameraHorizontalRotation += mouseX;
         cameraHorizontalRotation = Mathf.Clamp(cameraHorizontalRotation, -maxHorizontalAngle, maxHorizontalAngle);
 
-        player.localRotation = Quaternion.Euler(0f, cameraHorizontalRotation, 0f);
+        if (player != null)
+        {
+            player.localRotation = Quaternion.Euler(0f, cameraHorizontalRotation, 0f);
+        }
     }
 
     void HandleCameraSway()
     {
-        Vector2 targetSway = new Vector2(lookInput.x, lookInput.y) * swayAmount;
+        Vector2 targetSway = lookInput * swayAmount;
 
         currentSway = Vector2.Lerp(currentSway, targetSway, Time.deltaTime * swaySmooth);
 
@@ -120,10 +138,12 @@ public class FirstPersonCamera : MonoBehaviour
 
     void OnApplicationFocus(bool hasFocus)
     {
+#if UNITY_STANDALONE || UNITY_EDITOR
         if (hasFocus && cursorLocked)
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
+#endif
     }
 }
